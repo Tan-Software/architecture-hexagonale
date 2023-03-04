@@ -115,9 +115,9 @@ Par exemple, la persistance des données dépend des entités métier de l'appli
 [🔝 Retour en haut de page](#table-des-matières)
 
 ## L'inversion de dépendance
-Ce principe consiste à inverser les dépendances entre les différentes couches de l'application. Cela signifie que les couches supérieures ne dépendent pas des couches inférieures, mais plutôt de contrats et d'interfaces définis par ces couches inférieures.
+Ce principe consiste à inverser les dépendances entre les différentes couches de l'application. Les couches supérieures ne dépendent pas des couches inférieures, mais plutôt de contrats et d'interfaces définis par ces couches inférieures.
 
-Le but de l'inversion de dépendance est de permettre à chaque couche de l'application de rester indépendante et interchangeable. Cela signifie que si une couche inférieure change (par exemple, la couche d'infrastructure pour la persistance des données), cela n'aura pas d'impact sur les couches supérieures (par exemple, la couche de présentation ou la couche de logique métier).
+Le but de l'inversion de dépendance est de permettre à chaque couche de l'application de rester indépendante et interchangeable, ainsi si une couche inférieure change (par exemple, la couche d'infrastructure pour la persistance des données), cela n'aura pas d'impact sur les couches supérieures (par exemple, la couche de présentation ou la couche de logique métier).
 
 ### Exemple
 Imaginons que nous ayons une classe `UserService` qui dépend directement d'une classe `UserRepository` pour effectuer des opérations sur les utilisateurs dans une base de données. Si nous voulons changer la base de données utilisée ou même simplement les requêtes SQL effectuées, cela aura un impact direct sur la classe `UserService` et nécessitera des modifications dans son code.
