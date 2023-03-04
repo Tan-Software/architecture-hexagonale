@@ -151,13 +151,13 @@ end
 [🔝 Retour en haut de page](#table-des-matières)
 
 ## Le test-driven development
-Le TDD en Clean Architecture est un processus itératif de développement logiciel dans lequel chaque composant de l'application est testé de manière isolée à l'aide de tests unitaires.
+Le TDD est un processus itératif de développement logiciel dans lequel chaque composant de l'application est testé de manière isolée à l'aide de tests unitaires.
 
-Les tests sont la principale force motrice de la conception de l'application et visent à être un guide jusqu'à l'itération fonctionnelle du code production.
+Les tests sont la principale force motrice de la conception de l'application et visent à être un guide jusqu'à l'itération fonctionnelle du code de production.
 
 Ainsi, le principe consiste à conceptualiser le besoin, écrire un premier test simpliste, écrire le code de production correspondant pour répondre à ce test, et itérer jusqu'à ce que l'objectif soit atteint. 
 
-Une fois cet objectif atteint, un autre cas de test peut être écrit pour la même fonctionnalité afin de couvrir différents scénarios ou besoins. Cela permet de s'assurer que le code développé répond à l'ensemble des exigences de l'application
+Une fois cet objectif atteint, un autre cas de test peut être écrit pour la même fonctionnalité afin de couvrir différents scénarios ou besoins. Cela permet de s'assurer que le code développé répond à l'ensemble des exigences de l'application.
 
 ### Structure en couches
 Pour illustrer cela, le diagramme suivant indique avec une flèche en boucle entre les couches, la représentation itérative du TDD.
