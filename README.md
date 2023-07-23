@@ -4,8 +4,6 @@
 # Table des matières
 
 * [Introduction](#introduction)
-* [Principes de la Clean Architecture](#principes-de-la-clean-architecture)
-* [Le pattern Hexagonal](#le-pattern-hexagonal)
 * [Les différentes couches](#les-différentes-couches)
 * [L'inversion de dépendance](#linversion-de-dépendance)
 * [Le test-driven development](#le-test-driven-development)
@@ -13,28 +11,6 @@
 
 ## Introduction
 
-La clean architecture est un concept de développement logiciel qui a été introduit par l'ingénieur en logiciel [Robert C. Martin](http://cleancoder.com/products) en 2012. Elle est basée sur l'idée que l'architecture d'une application doit être conçue pour être indépendante des détails de mise en œuvre tels que la base de données, l'interface utilisateur et les frameworks utilisés.
-
-L'architecture propre vise à produire des systèmes logiciels qui sont hautement testables, évolutifs et maintenables tout au long de leur durée de vie. Elle repose sur plusieurs principes de conception tels que la séparation des préoccupations, la modularité, l'inversion de dépendance et la cohérence conceptuelle.
-
-Elle permet une plus grande flexibilité et une plus grande facilité à faire évoluer l'application, chaque couche pouvant être testée et développée de manière autonome. 
-
-[🔝 Retour en haut de page](#table-des-matières)
-
-## Principes de la Clean Architecture
-La Clean Architecture repose sur plusieurs principes fondamentaux permettant de concevoir des systèmes évolutifs, maintenables, testables et indépendants des frameworks. Parmi ces principes, on peut citer :
--   La séparation des préoccupations : chaque partie du système doit être responsable d'une seule chose, ce qui permet d'éviter les interactions non désirées et de faciliter les modifications.
--   L'indépendance des frameworks : le code métier ne doit pas dépendre d'un framework spécifique, pour permettre de changer de framework facilement si nécessaire.
--   La testabilité : le code doit être facilement testable pour garantir son bon fonctionnement.
--   L'évolutivité : le système doit être conçu pour être évolutif et pour permettre l'ajout de nouvelles fonctionnalités facilement.
--   La lisibilité : le code doit être lisible pour permettre à d'autres développeurs de comprendre rapidement ce qui se passe et de le maintenir facilement.
--   La simplicité : le système doit être conçu de manière simple, pour éviter les problèmes de complexité qui peuvent survenir à long terme.
-
-Le respect de ces principes permet de créer des architectures applicatives robustes, indépendantes et évolutives. Le diagramme le plus adapté pour représenter ces principes est un diagramme en couches, qui permet de visualiser la séparation des préoccupations et l'indépendance des frameworks.
-
-[🔝 Retour en haut de page](#table-des-matières)
-
-## Le pattern Hexagonal
 Le pattern Hexagonal est une architecture logicielle qui vise à organiser les composants d'une application (les classes, les modules, les fonctions, etc) en **couches** et à **isoler** la logique métier de l'application des détails techniques tels que la persistance des données ou l'interface utilisateur.
 
 Le cœur du pattern Hexagonal réside dans la création d'une couche centrale, appelée **"domain" ou "business logic"**, qui contient les [règles métiers](https://fr.wikipedia.org/wiki/R%C3%A8gles_m%C3%A9tier) et les [cas d'utilisation](https://fr.wikipedia.org/wiki/Cas_d%27utilisation) de l'application. Cette couche centrale est entièrement indépendante des autres couches et communique uniquement avec elles par le biais de ports d'entrée/sortie définis.
