@@ -106,20 +106,20 @@ B --> D(UserRepository2)
 ### Context
 Dans le contexte de l'architecture hexagonale, l'inversion de dépendance permet de respecter le principe de la séparation des préoccupations en garantissant que les détails techniques de l'application sont isolés des règles métiers. Cela permet également de faciliter les tests unitaires en permettant de tester chaque couche indépendamment des autres.
 
+L'architecture hexagonale se concentre sur la création de ports et d'adaptateurs pour séparer la logique métier de l'application des détails techniques. Les ports définissent les contrats que les adaptateurs doivent respecter, et les adaptateurs implémentent ces contrats pour interagir avec les différentes parties de l'application.
+
+Exemple
+
 ```mermaid
 graph TD
-subgraph Application
-A[Use Cases] -->B
-C[Entities] --> B
-D[Controllers] --> B
-end
-subgraph Infrastructure
-F[Frameworks & Drivers] -->G
-G -->|Interface| B
-end
-subgraph Domain
-B --> H[Business Rules]
-end
+A[Domain Logic]
+B[Ports]
+C[Adapters]
+
+A --> B
+B --> C
+
+
 ```
 
 [🔝 Retour en haut de page](#table-des-matières)
