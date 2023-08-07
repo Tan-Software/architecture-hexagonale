@@ -44,23 +44,27 @@ end
 ## Les différentes couches
 L'architecture hexagonale repose sur une organisation en différentes couches, chacune ayant une **responsabilité spécifique** dans l'application. Ces couches sont généralement les suivantes :
 
-### La couche de présentation
+### Le cœur de l'application (Domaine)
+Au centre de cette architecture se trouve le cœur de l'application, qui contient la logique métier et les entités. Cette partie est totalement indépendante des détails techniques et des interfaces externes, ce qui la rend facilement testable.
 
-La couche de présentation est responsable de l'interface utilisateur de l'application. Elle reçoit les requêtes de l'utilisateur, les traite, et retourne les réponses correspondantes. Cette couche peut être implémentée sous différentes formes, telles que des pages web, des applications mobiles, ou des interfaces en ligne de commande.
+### Ports
+Les ports définissent les contrats ou interfaces par lesquels le cœur de l'application interagit avec le monde extérieur. Il existe généralement deux types de ports :
 
-### La couche d'application
+### Ports primaires
+Ils définissent les fonctionnalités fournies par le cœur de l'application. Par exemple, une API pour créer un nouvel utilisateur.
 
-La couche d'application est responsable de la logique métier de l'application. Elle reçoit les requêtes de la couche de présentation, traite ces requêtes en utilisant les services de la couche de domaine, et retourne les réponses correspondantes à la couche de présentation.
+### Ports secondaires
+Ils définissent les fonctionnalités attendues par le cœur de l'application mais implémentées à l'extérieur, comme l'accès à une base de données.
+Adaptateurs
 
-### La couche de domaine
+## Les adaptateurs sont des implémentations concrètes des ports. 
+Ils "adaptent" les interfaces externes (comme une base de données, une interface utilisateur ou un service web) pour qu'elles puissent communiquer avec le cœur de l'application via les ports.
 
-La couche de domaine contient les règles métier de l'application, ainsi que les entités qui les utilisent. Elle est indépendante des détails techniques de l'application, tels que la persistance des données ou l'interface utilisateur, et peut donc être testée de manière isolée.
+### Adaptateurs primaires
+Ils reçoivent des requêtes du monde extérieur et les transmettent au cœur de l'application via les ports primaires. Par exemple, une interface utilisateur web.
 
-### La couche d'infrastructure
-
-La couche d'infrastructure est responsable de la gestion des détails techniques de l'application, tels que la persistance des données, la communication avec des services externes, ou encore la gestion des erreurs. Elle utilise les services définis dans la couche de domaine pour réaliser ces tâches, et communique avec la couche de présentation via des adaptateurs.
-____
-Chacune de ces couches a un rôle spécifique dans l'application, et leur découpage permet de favoriser la modularité, la maintenabilité, et la testabilité de celle-ci.
+### Adaptateurs secondaires
+Ils implémentent les fonctionnalités définies par les ports secondaires. Par exemple, une implémentation de base de données.
 
 ### Représentation graphique
 Ce diagramme représente les trois couches principales de la Clean Architecture : le Domain, l'Application et l'Infrastructure. Les flèches indiquent les dépendances entre les couches.
