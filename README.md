@@ -11,30 +11,24 @@
 
 ## Introduction
 
-Le pattern Hexagonal est une architecture logicielle qui vise à organiser les composants d'une application (les classes, les modules, les fonctions, etc) en **couches** et à **isoler** la logique métier de l'application des détails techniques tels que la persistance des données ou l'interface utilisateur.
+L'architecture hexagonale est une architecture logicielle qui vise à découpler la logique métier de l'application des détails techniques tels que la persistance des données ou l'interface utilisateur.
 
-Le cœur du pattern Hexagonal réside dans la création d'une couche centrale, appelée **"domain" ou "business logic"**, qui contient les [règles métiers](https://fr.wikipedia.org/wiki/R%C3%A8gles_m%C3%A9tier) et les [cas d'utilisation](https://fr.wikipedia.org/wiki/Cas_d%27utilisation) de l'application. Cette couche centrale est entièrement indépendante des autres couches et communique uniquement avec elles par le biais de ports d'entrée/sortie définis.
-
-La couche **d'infrastructure**, qui contient les détails techniques de l'application tels que la persistance des données, la communication réseau, etc., communique avec la couche centrale via des adaptateurs qui implémentent les ports définis.
-
-La couche de **présentation**, qui gère l'interface utilisateur de l'application, communique également avec la couche centrale via des adaptateurs.
+Au cœur de l'architecture hexagonale se trouve le domaine, qui contient les règles métiers et les cas d'utilisation de l'application. Le domaine est entouré de ports, qui définissent les contrats pour interagir avec le monde extérieur, et d'adaptateurs, qui implémentent ces contrats.
 
 ### Modèle d'architecture hexagonale
 La couche centrale est représentée par l'hexagone intérieur, tandis que les couches d'infrastructure et de présentation sont représentées par les hexagones extérieurs. Les adaptateurs sont représentés par les flèches reliant les différentes couches.
 ```mermaid
 graph TD
-subgraph Application
-A[Use Cases] -->B(Ports)
-C[Entities] --> B
-D[Controllers] --> B
-end
-subgraph Infrastructure
-F[Frameworks & Drivers] -->B
-end
 subgraph Domain
-G[Entities] -->E(Interfaces)
-E --> B
-H[Business Rules] -->E
+A[Entities] --> B[Business Rules]
+end
+subgraph Ports
+C[Primary Ports] --> B
+D[Secondary Ports] --> B
+end
+subgraph Adapters
+E[Primary Adapters] --> C
+F[Secondary Adapters] --> D
 end
 
 ```
@@ -95,9 +89,7 @@ Par exemple, la persistance des données dépend des entités métier de l'appli
 [🔝 Retour en haut de page](#table-des-matières)
 
 ## L'inversion de dépendance
-Ce principe consiste à inverser les dépendances entre les différentes couches de l'application. Les couches supérieures ne dépendent pas des couches inférieures, mais plutôt de contrats et d'interfaces définis par ces couches inférieures.
-
-Le but de l'inversion de dépendance est de permettre à chaque couche de l'application de rester indépendante et interchangeable, ainsi si une couche inférieure change (par exemple, la couche d'infrastructure pour la persistance des données), cela n'aura pas d'impact sur les couches supérieures (par exemple, la couche de présentation ou la couche de logique métier).
+Ce principe consiste à inverser les dépendances entre les différentes composantes de l'application. Dans l'architecture hexagonale, les adaptateurs dépendent des ports, et les ports dépendent du domaine. Cela permet d'isoler la logique métier et de rendre les composantes extérieures interchangeables.
 
 ### Exemple
 Imaginons que nous ayons une classe `UserService` qui dépend directement d'une classe `UserRepository` pour effectuer des opérations sur les utilisateurs dans une base de données. Si nous voulons changer la base de données utilisée ou même simplement les requêtes SQL effectuées, cela aura un impact direct sur la classe `UserService` et nécessitera des modifications dans son code.
@@ -108,10 +100,12 @@ graph TD
 A[UserService] -- dépend de --> B(UserRepositoryInterface)
 B --> C(UserRepository1)
 B --> D(UserRepository2)
+
 ```
 
 ### Context
-Dans le contexte de la Clean Hexagonale, l'inversion de dépendance permet de respecter le principe de la séparation des préoccupations en garantissant que les détails techniques de l'application sont isolés des règles métiers. Cela permet également de faciliter les tests unitaires en permettant de tester chaque couche indépendamment des autres.
+Dans le contexte de l'architecture hexagonale, l'inversion de dépendance permet de respecter le principe de la séparation des préoccupations en garantissant que les détails techniques de l'application sont isolés des règles métiers. Cela permet également de faciliter les tests unitaires en permettant de tester chaque couche indépendamment des autres.
+
 ```mermaid
 graph TD
 subgraph Application
@@ -131,13 +125,7 @@ end
 [🔝 Retour en haut de page](#table-des-matières)
 
 ## Le test-driven development
-Le TDD est un processus itératif de développement logiciel dans lequel chaque composant de l'application est testé de manière isolée à l'aide de tests unitaires.
-
-Les tests sont la principale force motrice de la conception de l'application et visent à être un guide jusqu'à l'itération fonctionnelle du code de production.
-
-Ainsi, le principe consiste à conceptualiser le besoin, écrire un premier test simpliste, écrire le code de production correspondant pour répondre à ce test, et itérer jusqu'à ce que l'objectif soit atteint. 
-
-Une fois cet objectif atteint, un autre cas de test peut être écrit pour la même fonctionnalité afin de couvrir différents scénarios ou besoins. Cela permet de s'assurer que le code développé répond à l'ensemble des exigences de l'application.
+Le TDD est un processus itératif de développement logiciel dans lequel chaque composant de l'application est testé de manière isolée à l'aide de tests unitaires. Bien que le TDD ne soit pas spécifique à l'architecture hexagonale, il peut être utilisé en conjonction avec celle-ci pour assurer une conception robuste et bien testée.
 
 ### Structure en couches
 Pour illustrer cela, le diagramme suivant indique avec une flèche en boucle entre les couches, la représentation itérative du TDD.
@@ -206,6 +194,7 @@ Controller --> View
 Repository --> Entity
 EventListener --> Event
 EventSubscriber --> Event
+
 ```
 
 ### Exemple concret : une application de gestion de tâches
@@ -216,66 +205,13 @@ Voici une représentation possible de l'architecture générale de l'application
 
 ```mermaid
 classDiagram
-    class Task {
-        <<entity>>
-        -id: int
-        -title: string
-        -description: string
-        -priority: int
-        -dueDate: datetime
-    }
-
-    class TaskRepository_interface {
-        +create(task: Task): void
-        +update(task: Task): void
-        +delete(id: int): void
-        +find(id: int): Task
-        +findAll(): Task[]
-    }
-
-    class TaskUseCase_interface {
-        +create(title: string, description: string, priority: int, dueDate: datetime): void
-        +update(id: int, title: string, description: string, priority: int, dueDate: datetime): void
-        +delete(id: int): void
-        +find(id: int): Task
-        +findAll(): Task[]
-    }
-
-    class TaskController {
-        <<controller>>
-        +create(request: Request): Response
-        +update(request: Request): Response
-        +delete(request: Request): Response
-        +show(request: Request): Response
-        +index(request: Request): Response
-    }
-
-    class TaskPresenter {
-        <<presenter>>
-        +present(task: Task): Response
-        +presentCollection(tasks: Task[]): Response
-    }
-
-    class TaskRepositoryImpl {
-        <<repository>>
-        +create(task: Task): void
-        +update(task: Task): void
-        +delete(id: int): void
-        +find(id: int): Task
-        +findAll(): Task[]
-    }
-
-    class TaskUseCaseImpl {
-        <<usecase>>
-        -repository: TaskRepository_interface
-        +__construct(repository: TaskRepository_interface)
-        +create(title: string, description: string, priority: int, dueDate: datetime): void
-        +update(id: int, title: string, description: string, priority: int, dueDate: datetime): void
-        +delete(id: int): void
-        +find(id: int): Task
-        +findAll(): Task[]
-    }
-
+    class Task { ... }
+    class TaskRepository_interface { ... }
+    class TaskUseCase_interface { ... }
+    class TaskController { ... }
+    class TaskPresenter { ... }
+    class TaskRepositoryImpl { ... }
+    class TaskUseCaseImpl { ... }
     TaskController --> TaskPresenter
     TaskPresenter --> TaskController
     TaskController --> TaskUseCase_interface
@@ -285,6 +221,7 @@ classDiagram
     TaskRepositoryImpl --> TaskRepository_interface
     TaskUseCaseImpl --> TaskUseCase_interface
     TaskUseCaseImpl --> TaskRepository_interface
+
 
 ```
 ### Description
