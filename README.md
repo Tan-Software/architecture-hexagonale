@@ -51,14 +51,14 @@ Ils définissent les fonctionnalités fournies par le cœur de l'application. Pa
 Ils définissent les fonctionnalités attendues par le cœur de l'application mais implémentées à l'extérieur, comme l'accès à une base de données.
 Adaptateurs
 
-## Les adaptateurs sont des implémentations concrètes des ports. 
+## Les adaptateurs (adapter en anglais) sont des implémentations concrètes des ports. 
 Ils "adaptent" les interfaces externes (comme une base de données, une interface utilisateur ou un service web) pour qu'elles puissent communiquer avec le cœur de l'application via les ports.
 
 ### Adaptateurs primaires
-Ils reçoivent des requêtes du monde extérieur et les transmettent au cœur de l'application via les ports primaires. Par exemple, une interface utilisateur web.
+Les adaptateurs primaires reçoivent des requêtes du monde extérieur (comme une interface utilisateur ou une API externe) et les transmettent au cœur de l'application via les ports primaires. Ils sont responsables de la conversion des données entrantes en un format que le domaine peut comprendre.
 
 ### Adaptateurs secondaires
-Ils implémentent les fonctionnalités définies par les ports secondaires. Par exemple, une implémentation de base de données.
+Les adaptateurs secondaires implémentent les fonctionnalités définies par les ports secondaires. Ils sont responsables de la communication avec les systèmes externes, tels que les bases de données, les services de messagerie, etc. Ils adaptent ces systèmes externes pour qu'ils puissent interagir avec le cœur de l'application via les ports secondaires.
 
 ### Représentation graphique
 Ce diagramme représente les trois couches principales de la Clean Architecture : le Domain, l'Application et l'Infrastructure. Les flèches indiquent les dépendances entre les couches.
@@ -69,16 +69,18 @@ Enfin, dans l'Infrastructure, nous avons les frameworks et les drivers, qui gèr
 ```mermaid
 graph TD
 subgraph Domain
-A((Entities)) -- Domain --> B((Use Cases))
-B -- Domain --> C((Business Rules))
+A[Entities] --> B[Business Rules]
 end
-subgraph Application
-D((Controllers)) -- Application --> B
-D -- Application --> E((ViewModels))
+subgraph Ports
+C[Primary Ports] --> B
+D[Secondary Ports] --> B
 end
-subgraph Infrastructure
-F((Frameworks & Drivers)) -- Infrastructure --> D
+subgraph Adapters
+E[Primary Adapters] --> C
+F[Secondary Adapters] --> D
 end
+
+
 ```
 Les flèches dans le diagramme représentent les dépendances entre les différentes couches de l'architecture hexagonale. 
 
