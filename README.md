@@ -49,7 +49,8 @@ Ils définissent les fonctionnalités fournies par le cœur de l'application. Pa
 
 ### Ports secondaires
 Ils définissent les fonctionnalités attendues par le cœur de l'application mais implémentées à l'extérieur, comme l'accès à une base de données.
-Adaptateurs
+
+## Adaptateurs
 
 ## Les adaptateurs (adapter en anglais) sont des implémentations concrètes des ports. 
 Ils "adaptent" les interfaces externes (comme une base de données, une interface utilisateur ou un service web) pour qu'elles puissent communiquer avec le cœur de l'application via les ports.
